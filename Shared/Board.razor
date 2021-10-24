@@ -17,12 +17,13 @@
     @for(int i=0;i<Rows;i++){
         @for(int j=0;j<Cols;j++){
            var obj = Data[i,j];
-            <g transform="translate(@(j*cellWidth),@(i*cellWidth))" @onclick="()=>Action(obj)">
+            <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
+            <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
             @if(!obj.Deleted){
                 @if(obj.Selected){
-                    <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="lightgrey"></rect>
+                    <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="lightgrey" @onclick="()=>Action(obj)"></rect>
                 }
-                <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2)" fill="@Data[i,j].Color"></circle>
+                <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Data[i,j].Color" @onclick="()=>Action(obj)"></circle>
             }
             @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
             </g>
@@ -62,6 +63,10 @@
 
 
     public void NewGame(){
+        this.currentSelection = 0;
+        this.score = 0;
+        this.undoStack.Clear();
+        this.redoStack.Clear();
         var random = new Random();
         for(int i=0;i<Rows;i++){
             for(int j=0;j<Cols;j++){
