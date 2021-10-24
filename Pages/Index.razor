@@ -1,11 +1,22 @@
 ﻿@page "/"
 
-<button class="btn btn-outline-primary" @onclick="()=>NewGame()">New Game</button><br/><br/>
+<button class="btn btn-outline-primary" @onclick="()=>NewGame()">New Game</button>
+        <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
+         <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
+<br/><br/>
 <Board @ref="board" Width="1000" Height="500" Rows="10" Cols="20" Colors="4"></Board>
 @code{
     
     Board board;
     public void NewGame(){
         board.NewGame();        
+    }
+
+    public void Undo(){
+        board.Undo();        
+    }
+
+    public void Redo(){
+        board.Redo();        
     }
 }

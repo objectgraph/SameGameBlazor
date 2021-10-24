@@ -1,7 +1,5 @@
 <div class="row">
     <div class="col-md-3">
-        <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
-         <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
     </div>
     <div class="col-md-3">
         Score: @score
@@ -243,7 +241,7 @@
         return cellCount;
     }
 
-    private void Undo() {
+    public void Undo() {
         if (this.undoStack.Count > 0) {
             var nowLiveCount = this.LiveCellCount();
             this.redoStack.Push(Serialize());
@@ -257,7 +255,7 @@
         }
     }
 
-    private void Redo(){
+    public void Redo(){
         if (this.redoStack.Count > 0) {
             var nowLiveCount = this.LiveCellCount();
             this.undoStack.Push(Serialize());
