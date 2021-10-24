@@ -1,5 +1,9 @@
 <div class="row">
     <div class="col-md-3">
+        <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
+         <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
+    </div>
+    <div class="col-md-3">
         Score: @score
     </div>
     <div class="col-md-3">
@@ -20,7 +24,7 @@
                 }
                 <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2)" fill="@Data[i,j].Color"></circle>
             }
-            <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text>
+            @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
             </g>
 
         }
@@ -35,6 +39,8 @@
     int cellWidth = 0;
     public record struct Cell(int Row, int Col, string Color,bool Selected,bool Deleted);   
     public Cell[,] Data{get;set;}
+    Stack<string> undoStack = new Stack<string>();
+    Stack<string> redoStack = new Stack<string>();
 
     public int currentSelection= 0;
     public int score = 0;
@@ -45,6 +51,16 @@
         Data = new Cell[Rows,Cols]; 
         NewGame();
     }
+
+    public string Serialize(){
+        return JsonConvert.SerializeObject(Data);
+    }
+
+    public void DeSerialize(string data){
+        Data = JsonConvert.DeserializeObject<Cell[,]>(data);
+    }
+
+
     public void NewGame(){
         var random = new Random();
         for(int i=0;i<Rows;i++){
@@ -72,11 +88,15 @@
         StateHasChanged();
     }
 
-    private void PrintState(){
+    private void PrintState(string message=""){
+        if(!string.IsNullOrEmpty(message)){
+            Console.WriteLine(message);
+        }
          for(int i=0;i<Rows;i++){
             for(int j=0;j<Cols;j++){
-                Console.WriteLine(Data[i,j]);
+                Console.Write(Data[i,j]);
             }
+            Console.WriteLine();
          }
     }
     private bool isValid (int row, int col){
@@ -113,9 +133,9 @@
         this.getSameColorNeighbors(arr, cell);
         if (arr.Count > 0) {
             if (cell.Selected) {
-                @* this.redoStack = [];
-                this.undoStack.push(JSON.parse(JSON.stringify(this.data))); *@
-                @* this.score = this.score + ((arr.length) * (arr.length - 1) * 10) *@
+                this.redoStack.Clear();
+                this.undoStack.Push(Serialize());
+                this.score = this.score + ((arr.Count) * (arr.Count - 1) * 10);
                 arr.ForEach((obj) => Data[obj.Row,obj.Col].Deleted = true );
                 this.currentSelection = 0;
             }
@@ -129,7 +149,7 @@
                 this.currentSelection = (arr.Count) * (arr.Count - 1) * 10;
             }
             this.Gravity();
-            @* this.Compact(); *@
+            this.Compact();
             this.gameOver = this.DetectGameOver();
             StateHasChanged();
         }
@@ -192,16 +212,58 @@
         return true;
     }
     void Swap( int i, int j, int k, int l) {
-        int trow = Data[i,j].Row;
-        int tcol = Data[i,j].Col;
+        string tColor = Data[i,j].Color;
+        bool tSelected = Data[i,j].Selected;
+        bool tDeleted = Data[i,j].Deleted;
 
-        Data[i,j].Row = Data[k,l].Row;
-        Data[i,j].Col = Data[k,l].Col;
-        Data[k,l].Row = trow;
-        Data[k,l].Col = tcol;
-        var temp = Data[i,j];
-        Data[i,j] = Data[k,l];
-        Data[k,j] = temp;
+        Data[i,j].Color = Data[k,l].Color;
+        Data[i,j].Selected = Data[k,l].Selected;
+        Data[i,j].Deleted = Data[k,l].Deleted;
+        
+        Data[k,l].Color = tColor;
+        Data[k,l].Selected = tSelected;
+        Data[k,l].Deleted = tDeleted;
+        
+    }
+
+    private int LiveCellCount(){
+        var cellCount = 0;
+         for (int i = 0; i < this.Rows; i++) {
+            for (int j = 0; j < this.Cols; j++) {
+                if (!Data[i,j].Deleted) {
+                    cellCount++;
+                }
+            }
+        }
+        return cellCount;
+    }
+
+    private void Undo() {
+        if (this.undoStack.Count > 0) {
+            var nowLiveCount = this.LiveCellCount();
+            this.redoStack.Push(Serialize());
+            var data = undoStack.Pop();
+            DeSerialize(data);
+            var afterUndoLiveCount = this.LiveCellCount();
+            var diff = afterUndoLiveCount - nowLiveCount;
+            this.score = this.score - (diff * (diff - 1) * 10);
+            this.gameOver = this.DetectGameOver();
+            StateHasChanged();
+        }
+    }
+
+    private void Redo(){
+        if (this.redoStack.Count > 0) {
+            var nowLiveCount = this.LiveCellCount();
+            this.undoStack.Push(Serialize());
+            var data = redoStack.Pop();
+            DeSerialize(data);
+            var afterUndoLiveCount = this.LiveCellCount();
+            var diff = nowLiveCount - afterUndoLiveCount;
+            this.score = this.score + (diff * (diff - 1) * 10);
+            this.gameOver = this.DetectGameOver();
+            StateHasChanged();
+        }
     }
 
 }
