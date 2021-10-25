@@ -1,6 +1,11 @@
 @inject DataStore DataStore
 <div class="board">
     <div class="row">
+        <div class="col small">
+            @GameID
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             Score: @score
         </div>
@@ -53,7 +58,11 @@
         base.OnInitialized();
         cellWidth = Width/Cols;
         Data = new Cell[Rows,Cols]; 
-        NewGame();
+    }
+
+    protected void Redraw(){
+        DataStore.Data[GameID] = Data;
+        StateHasChanged();
     }
 
     public string Serialize(){
@@ -93,8 +102,7 @@
                 Data[i,j]= new Cell(i,j,cl,false,false);
             }    
         }
-        DataStore.Data[GameID] = Data;
-        StateHasChanged();
+        Redraw();
     }
 
     private void PrintState(string message=""){
@@ -160,7 +168,7 @@
             this.Gravity();
             this.Compact();
             this.gameOver = this.DetectGameOver();
-            StateHasChanged();
+            Redraw();
         }
     }
      private void Gravity (){
@@ -257,7 +265,7 @@
             var diff = afterUndoLiveCount - nowLiveCount;
             this.score = this.score - (diff * (diff - 1) * 10);
             this.gameOver = this.DetectGameOver();
-            StateHasChanged();
+            Redraw();
         }
     }
 
@@ -271,7 +279,7 @@
             var diff = nowLiveCount - afterUndoLiveCount;
             this.score = this.score + (diff * (diff - 1) * 10);
             this.gameOver = this.DetectGameOver();
-            StateHasChanged();
+            Redraw();
         }
     }
 

@@ -1,5 +1,8 @@
 @page "/showdata"
 @inject DataStore DataStore
+<button class="btn btn-outline-primary" @onclick="Refresh">Refresh</button>
+<button class="btn btn-outline-primary" @onclick="Reset">Reset</button>
+
 <table class="table">
     @foreach(var key in DataStore.Data.Keys){
         <tr>
@@ -11,6 +14,12 @@
 </table>
 
 @code{
+    protected void Refresh(){
+        StateHasChanged();
+    }
+    protected void Reset(){
+        DataStore.Data = new ObservableConcurrentDictionary<string, Cell[,]>();
+    }
     protected override void OnInitialized() {
         base.OnInitialized();
         Console.WriteLine("On Init");
