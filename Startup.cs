@@ -15,7 +15,6 @@ namespace SameGame
 {
     public class Startup
     {
-        static ObservableConcurrentDictionary<string,Cell[,]> data = new ObservableConcurrentDictionary<string,Cell[,]>();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,7 +30,7 @@ namespace SameGame
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<
+            services.AddSingleton<DataStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

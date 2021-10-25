@@ -1,0 +1,26 @@
+@page "/showdata"
+@inject DataStore DataStore
+<table class="table">
+    @foreach(var key in DataStore.Data.Keys){
+        <tr>
+        <td>@key</td>
+        <td>@(DataStore.Data[key].Length)</td>
+        </tr>
+    }
+
+</table>
+
+@code{
+    protected override void OnInitialized() {
+        base.OnInitialized();
+        Console.WriteLine("On Init");
+        DataStore.Data.PropertyChanged+=(s,e)=>{
+            Console.WriteLine("Property has changed");
+            StateHasChanged();
+        };
+         DataStore.Data.CollectionChanged+=(s,e)=>{
+            StateHasChanged();
+            Console.WriteLine("Collection has changed");
+        };
+    }
+}
