@@ -58,7 +58,10 @@
         base.OnInitialized();
         cellWidth = Width/Cols;
         Data = new Cell[Rows,Cols]; 
-        NewGame();
+        for(int i=0;i<Rows;i++){
+            for(int j=0;j<Cols;j++){
+                Data[i,j] = new Cell(i,j,null,false,false);            }
+        }
     }
 
     protected async Task Redraw(){
