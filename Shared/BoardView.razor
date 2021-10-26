@@ -1,34 +1,18 @@
 @inject DataStore DataStore
 <div class="board">
     <div class="row">
-        <div class="col small">
-            @GameID
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            Score: @score
-        </div>
-        <div class="col-md-4">
-            Selection: @currentSelection
-        </div>
-        <div class="col-md-4">
-            GameOver: @gameOver
-        </div>
-    </div>
-    <div class="row">
         <div class="col">
         <svg width="@Width" height="@Height">
         @for(int i=0;i<Rows;i++){
             @for(int j=0;j<Cols;j++){
             var obj = Data[i,j];
                 <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
-                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
+                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
                 @if(!obj.Deleted){
                     @if(obj.Selected){
-                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
+                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey"></rect>
                     }
-                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Data[i,j].Color" @onclick="()=>Action(obj)"></circle>
+                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Data[i,j].Color"></circle>
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
                 </g>
@@ -45,8 +29,7 @@
     [Parameter] public int Rows{get;set;}=10;
     [Parameter] public int Cols{get;set;}=10;
     [Parameter] public int Colors{get;set;}=5;
-    int cellWidth = 0;
-    public Cell[,] Data{get;set;}
+    [Parameter] public Cell[,] Data{get;set;}
     Stack<string> undoStack = new Stack<string>();
     Stack<string> redoStack = new Stack<string>();
     string GameID = Guid.NewGuid().ToString();
@@ -54,6 +37,9 @@
     public int currentSelection= 0;
     public int score = 0;
     public bool gameOver = false;
+
+    int cellWidth = 0;
+
     protected override void OnInitialized() {
         base.OnInitialized();
         cellWidth = Width/Cols;
