@@ -13,7 +13,7 @@ To learn blazor server I wanted to try something i created in multiple other lan
 ## Demo
 You can play the current deployed code here.
 
-[https://isamegame.surge.sh/](https://isamegame.surge.sh/)
+[http://samegame.objectgraph.com/](http://samegame.objectgraph.com/)
 
 ## This implmentation
 
