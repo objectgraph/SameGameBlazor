@@ -56,8 +56,11 @@
         Game.GameStateChanged+=OnGameStateChanged;
     }
 
-    private void OnGameStateChanged(object sender, EventArgs args){
-        StateHasChanged();
+    private  async void OnGameStateChanged(object sender, EventArgs args){
+        await InvokeAsync(()=>{
+            DataStore.GlobalStore[Game.GameID] = Game.GameState;
+            StateHasChanged();
+        });
     }
 
 

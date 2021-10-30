@@ -4,10 +4,10 @@
 <button class="btn btn-outline-primary" @onclick="Reset">Reset</button>
 
 <table class="table">
-    @foreach(var key in DataStore.Data.Keys){
+    @foreach(var key in DataStore.GlobalStore.Keys){
         <tr>
         <td>@key</td>
-        <td><BoardView Width="100" Height="100" Rows="10" Cols="10" Colors="4" Data=DataStore.Data[key]></BoardView></td>
+        <td><BoardView Width="100" Height="100" Rows="10" Cols="10" Colors="4" Data=DataStore.GlobalStore[key].Data></BoardView></td>
         </tr>
     }
 
@@ -25,13 +25,13 @@
     protected override void OnInitialized() {
         base.OnInitialized();
         Console.WriteLine("On Init");
-        DataStore.Data.PropertyChanged+= OnMyChangeHandler;
-        DataStore.Data.CollectionChanged+= OnMyChangeHandler;
+        DataStore.GlobalStore.PropertyChanged+= OnMyChangeHandler;
+        DataStore.GlobalStore.CollectionChanged+= OnMyChangeHandler;
     }
 
     protected void Dispose(){
-        DataStore.Data.PropertyChanged-= OnMyChangeHandler;
-        DataStore.Data.CollectionChanged-= OnMyChangeHandler;
+        DataStore.GlobalStore.PropertyChanged-= OnMyChangeHandler;
+        DataStore.GlobalStore.CollectionChanged-= OnMyChangeHandler;
     }
 
     private async void OnMyChangeHandler(object sender, EventArgs e)
