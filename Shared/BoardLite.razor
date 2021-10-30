@@ -1,14 +1,20 @@
+@page "/lite"
 @inject DataStore DataStore
 <div class="board">
     <div class="row">
+        <div class="col small">
+            @Game.GameID
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
-            Score: @GameState.Score
+            Score: @Game.GameState.Score
         </div>
         <div class="col-md-4">
-            Selection: @GameState.CurrentSelection
+            Selection: @Game.GameState.CurrentSelection
         </div>
         <div class="col-md-4">
-            GameOver: @GameState.GameOver
+            GameOver: @Game.GameState.GameOver
         </div>
     </div>
     <div class="row">
@@ -16,14 +22,14 @@
         <svg width="@Width" height="@Height">
         @for(int i=0;i<Rows;i++){
             @for(int j=0;j<Cols;j++){
-            var obj = GameState.Data[i,j];
+            var obj = Game.GameState.Data[i,j];
                 <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
-                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
+                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
                 @if(!obj.Deleted){
                     @if(obj.Selected){
-                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey"></rect>
+                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
                     }
-                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color"></circle>
+                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color" @onclick="()=>Action(obj)"></circle>
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
                 </g>
@@ -40,12 +46,26 @@
     [Parameter] public int Rows{get;set;}=10;
     [Parameter] public int Cols{get;set;}=10;
     [Parameter] public int Colors{get;set;}=5;
-    [Parameter] public GameState GameState{get;set;}
+    public Game Game{get;set;}
     int cellWidth = 0;
 
     protected override void OnInitialized() {
         base.OnInitialized();
         cellWidth = Width/Cols;
+        Game = new Game(Rows,Cols,Colors);
+        Game.GameStateChanged+=OnGameStateChanged;
+    }
+
+    private  async void OnGameStateChanged(object sender, EventArgs args){
+        await InvokeAsync(()=>{
+            DataStore.GlobalStore[Game.GameID] = Game.GameState;
+            StateHasChanged();
+        });
+    }
+
+
+    private void Action(Cell cell){
+        Game.Action(cell);
     }
 
 }
