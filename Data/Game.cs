@@ -9,12 +9,9 @@ namespace SameGame.Data{
         Stack<String> redoStack = new Stack<String>();
         public string GameID{get;set;} 
         public string UserID{get;set;}
-        public bool GameOver{get;set;}
-        public int Score{get;set;}
         public int Rows{get;set;}
         public int Cols{get;set;}
         public int NumColors{get;set;}
-        public int CurrentSelection{get;set;}
 
         protected virtual void OnGameStateChanged()
         {
@@ -43,7 +40,7 @@ namespace SameGame.Data{
         }
 
         public void NewGame(){
-            this.Score = 0;
+            this.GameState.Score = 0;
             this.undoStack.Clear();
             this.redoStack.Clear();
             var random = new Random();
@@ -108,10 +105,9 @@ namespace SameGame.Data{
                 if (cell.Selected) {
                     this.redoStack.Clear();
                     this.undoStack.Push(GameState.Serialize());
-                    this.Score = this.Score + ((arr.Count) * (arr.Count - 1) * 10);
-                    GameState.Score = Score;
+                    this.GameState.Score = this.GameState.Score + ((arr.Count) * (arr.Count - 1) * 10);
                     arr.ForEach((obj) => GameState.Data[obj.Row,obj.Col].Deleted = true );
-                    this.CurrentSelection = 0;
+                    this.GameState.CurrentSelection = 0;
                 }
                 else {
                     for(int i=0;i<Rows;i++){
@@ -120,11 +116,11 @@ namespace SameGame.Data{
                         }
                     }
                     arr.ForEach((obj) => GameState.Data[obj.Row,obj.Col].Selected = true );
-                    this.CurrentSelection = (arr.Count) * (arr.Count - 1) * 10;
+                    this.GameState.CurrentSelection = (arr.Count) * (arr.Count - 1) * 10;
                 }
                 this.Gravity();
                 this.Compact();
-                this.GameOver = this.DetectGameOver();
+                this.GameState.GameOver = this.DetectGameOver();
                 // Raise Event await Redraw();
                 OnGameStateChanged();
             }
@@ -220,22 +216,8 @@ namespace SameGame.Data{
                 GameState =  GameState.DeSerialize(undoStack.Pop());
                 var afterUndoLiveCount = this.LiveCellCount();
                 var diff = afterUndoLiveCount - nowLiveCount;
-                this.Score = this.Score - (diff * (diff - 1) * 10);
-                this.GameOver = this.DetectGameOver();
-                //await Redraw();
+                this.GameState.GameOver = this.DetectGameOver();
                 OnGameStateChanged();
-            }
-        }
-
-        public void PrintState(string message=""){
-            if(!string.IsNullOrEmpty(message)){
-                Console.WriteLine(message);
-            }
-            for(int i=0;i<Rows;i++){
-                for(int j=0;j<Cols;j++){
-                    Console.Write(GameState.Data[i,j]);
-                }
-                Console.WriteLine();
             }
         }
 
@@ -246,9 +228,7 @@ namespace SameGame.Data{
                 GameState = GameState.DeSerialize(redoStack.Pop());
                 var afterUndoLiveCount = this.LiveCellCount();
                 var diff = nowLiveCount - afterUndoLiveCount;
-                this.Score = this.Score + (diff * (diff - 1) * 10);
-                this.GameOver = this.DetectGameOver();
-                //await Redraw();
+                this.GameState.GameOver = this.DetectGameOver();
                 OnGameStateChanged();
             }
         }
