@@ -5,8 +5,8 @@ namespace SameGame.Data{
     public class Game{
         public event EventHandler GameStateChanged;
         public GameState GameState;
-        Stack<GameState> undoStack = new Stack<GameState>();
-        Stack<GameState> redoStack = new Stack<GameState>();
+        Stack<String> undoStack = new Stack<String>();
+        Stack<String> redoStack = new Stack<String>();
         public string GameID{get;set;} 
         public string UserID{get;set;}
         public bool GameOver{get;set;}
@@ -107,8 +107,7 @@ namespace SameGame.Data{
             if (arr.Count > 0) {
                 if (cell.Selected) {
                     this.redoStack.Clear();
-                    var currentState = GameState;
-                    this.undoStack.Push(currentState);
+                    this.undoStack.Push(GameState.Serialize());
                     this.Score = this.Score + ((arr.Count) * (arr.Count - 1) * 10);
                     GameState.Score = Score;
                     arr.ForEach((obj) => GameState.Data[obj.Row,obj.Col].Deleted = true );
@@ -217,8 +216,8 @@ namespace SameGame.Data{
         public void Undo() {
             if (this.undoStack.Count > 0) {
                 var nowLiveCount = this.LiveCellCount();
-                this.redoStack.Push(GameState);
-                GameState =  undoStack.Pop();
+                this.redoStack.Push(GameState.Serialize());
+                GameState =  GameState.DeSerialize(undoStack.Pop());
                 var afterUndoLiveCount = this.LiveCellCount();
                 var diff = afterUndoLiveCount - nowLiveCount;
                 this.Score = this.Score - (diff * (diff - 1) * 10);
@@ -243,8 +242,8 @@ namespace SameGame.Data{
         public void Redo(){
             if (this.redoStack.Count > 0) {
                 var nowLiveCount = this.LiveCellCount();
-                this.undoStack.Push(GameState);
-                GameState = redoStack.Pop();
+                this.undoStack.Push(GameState.Serialize());
+                GameState = GameState.DeSerialize(redoStack.Pop());
                 var afterUndoLiveCount = this.LiveCellCount();
                 var diff = nowLiveCount - afterUndoLiveCount;
                 this.Score = this.Score + (diff * (diff - 1) * 10);

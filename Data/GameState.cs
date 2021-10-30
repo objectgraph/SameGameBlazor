@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace SameGame.Data{
     public struct GameState{
         public int Rows{get;set;}
@@ -12,6 +14,14 @@ namespace SameGame.Data{
             this.NumColors = NumColors;
             this.Data = new Cell[Rows,Cols];
             this.Score = 0;
+        }
+
+        public string Serialize(){
+            return JsonConvert.SerializeObject(this);
+        }
+
+        public static GameState DeSerialize(string str){
+            return JsonConvert.DeserializeObject<GameState>(str);
         }
     }
 
