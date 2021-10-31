@@ -1,0 +1,37 @@
+@inject DataStore DataStore
+<div class="board">
+    <div class="row">
+        <div class="col small">
+            @Game.GameID
+        </div>
+    </div>
+    <BoardView Width="@Width" Height="@Height" Rows="@Rows" Cols="@Cols" Colors="@Colors" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
+</div>
+@code{
+    [Parameter] public int Width{get;set;}=500;
+    [Parameter] public int Height{get;set;}=500;
+    [Parameter] public int Rows{get;set;}=10;
+    [Parameter] public int Cols{get;set;}=10;
+    [Parameter] public int Colors{get;set;}=5;
+    public Game Game{get;set;}
+    int cellWidth = 0;
+
+    protected override void OnInitialized() {
+        base.OnInitialized();
+        cellWidth = Width/Cols;
+        Game = new Game(Rows,Cols,Colors);
+        Game.GameStateChanged+=OnGameStateChanged;
+    }
+
+    private  async void OnGameStateChanged(object sender, EventArgs args){
+        await InvokeAsync(()=>{
+            DataStore.GlobalStore[Game.GameID] = Game.GameState;
+            StateHasChanged();
+        });
+    }
+
+    private void Action(Cell cell){
+        Game.Action(cell);
+    }
+
+}

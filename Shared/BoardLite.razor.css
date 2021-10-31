@@ -1,0 +1,23 @@
+.cell-added{
+    animation: cellappeared 1s ease;
+}
+
+.cell-removed{
+    animation: cellremoved 1s ease;
+}
+
+@keyframes cellremoved {
+    0% { opacity: 1; transform: scale(1) }
+    10% { opacity: 0.2; scale: 0.1}
+    15% { opacity: 0.3; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0; transform: scale(0)}
+} 
+
+@keyframes cellappeared {
+    0% { opacity: 0.1; transform: scale(0.1) }
+    10% { opacity: 0.2; scale: 0.1}
+    15% { opacity: 0.3; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; transform: scale(1)}
+} 

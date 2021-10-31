@@ -4,19 +4,19 @@
         <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
          <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
 <br/><br/>
-<Board @ref="board" Width="500" Height="500" Rows="10" Cols="10" Colors="4"></Board>
+<BoardLite @ref="board" Width="500" Height="500" Rows="10" Cols="10" Colors="5"></BoardLite>
 @code{
     
-    Board board;
+    BoardLite board;
     public void NewGame(){
-        board.NewGame();        
+        board.Game.NewGame();        
     }
 
     public void Undo(){
-        board.Undo();        
+        board.Game.Undo();        
     }
 
     public void Redo(){
-        board.Redo();        
+        board.Game.Redo();        
     }
 }
