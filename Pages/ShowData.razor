@@ -7,10 +7,9 @@
     @foreach(var key in DataStore.GlobalStore.Keys){
         <tr>
         <td>@key</td>
-        <td><BoardView Width="100" Height="100" Rows="10" Cols="10" Colors="4" GameState=DataStore.GlobalStore[key]></BoardView></td>
+        <td><BoardView Width="100" Height="100" GameState=DataStore.GlobalStore[key]></BoardView></td>
         </tr>
     }
-
 </table>
 
 @code{

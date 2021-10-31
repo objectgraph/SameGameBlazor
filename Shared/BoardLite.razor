@@ -5,7 +5,7 @@
             @Game.GameID
         </div>
     </div>
-    <BoardView Width="@Width" Height="@Height" Rows="@Rows" Cols="@Cols" Colors="@Colors" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
+    <BoardView Width="@Width" Height="@Height" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
 </div>
 @code{
     [Parameter] public int Width{get;set;}=500;

@@ -14,8 +14,8 @@
     <div class="row">
         <div class="col">
         <svg width="@Width" height="@Height">
-        @for(int i=0;i<Rows;i++){
-            @for(int j=0;j<Cols;j++){
+        @for(int i=0;i<GameState.Rows;i++){
+            @for(int j=0;j<GameState.Cols;j++){
             var obj = GameState.Data[i,j];
                 <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
                 <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
@@ -27,7 +27,6 @@
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
                 </g>
-
             }
         }
         </svg>
@@ -37,19 +36,14 @@
 @code{
     [Parameter] public int Width{get;set;}=500;
     [Parameter] public int Height{get;set;}=500;
-    [Parameter] public int Rows{get;set;}=10;
-    [Parameter] public int Cols{get;set;}=10;
-    [Parameter] public int Colors{get;set;}=5;
     [Parameter] public GameState GameState{get;set;}
     [Parameter] public Action<Cell> ActionMethod{get;set;}
     int cellWidth = 0;
     protected override void OnInitialized() {
         base.OnInitialized();
-        cellWidth = Width/Cols;
+        cellWidth = Width/GameState.Cols;
     }
-
     public void Action(Cell obj){
         ActionMethod?.Invoke(obj);
     }
-
 }
