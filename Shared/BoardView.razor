@@ -18,12 +18,12 @@
             @for(int j=0;j<Cols;j++){
             var obj = GameState.Data[i,j];
                 <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
-                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
+                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
                 @if(!obj.Deleted){
                     @if(obj.Selected){
-                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey"></rect>
+                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
                     }
-                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color"></circle>
+                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color" @onclick="()=>Action(obj)"></circle>
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
                 </g>
@@ -41,11 +41,15 @@
     [Parameter] public int Cols{get;set;}=10;
     [Parameter] public int Colors{get;set;}=5;
     [Parameter] public GameState GameState{get;set;}
+    [Parameter] public Action<Cell> ActionMethod{get;set;}
     int cellWidth = 0;
-
     protected override void OnInitialized() {
         base.OnInitialized();
         cellWidth = Width/Cols;
+    }
+
+    public void Action(Cell obj){
+        ActionMethod?.Invoke(obj);
     }
 
 }

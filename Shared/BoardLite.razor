@@ -5,39 +5,7 @@
             @Game.GameID
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            Score: @Game.GameState.Score
-        </div>
-        <div class="col-md-4">
-            Selection: @Game.GameState.CurrentSelection
-        </div>
-        <div class="col-md-4">
-            GameOver: @Game.GameState.GameOver
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-        <svg width="@Width" height="@Height">
-        @for(int i=0;i<Rows;i++){
-            @for(int j=0;j<Cols;j++){
-            var obj = Game.GameState.Data[i,j];
-                <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
-                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
-                @if(!obj.Deleted){
-                    @if(obj.Selected){
-                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
-                    }
-                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color" @onclick="()=>Action(obj)"></circle>
-                }
-                @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
-                </g>
-
-            }
-        }
-        </svg>
-        </div>
-    </div>
+    <BoardView Width="@Width" Height="@Height" Rows="@Rows" Cols="@Cols" Colors="@Colors" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
 </div>
 @code{
     [Parameter] public int Width{get;set;}=500;
@@ -61,7 +29,6 @@
             StateHasChanged();
         });
     }
-
 
     private void Action(Cell cell){
         Game.Action(cell);
