@@ -11,18 +11,13 @@
     BoardLite board;
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-        
-       
+        base.OnInitialized();    
     }
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if(board!=null && !string.IsNullOrEmpty(BoardId)){
             board.Game.InitGame(BoardId);       
         }
-        else if(board!=null){
-            board.Game.NewGame();
-        }
-
+        
     }
 
 
