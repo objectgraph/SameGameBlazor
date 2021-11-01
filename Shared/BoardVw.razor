@@ -1,0 +1,34 @@
+@inject DataStore DataStore
+<div class="board">
+    <div class="row">
+        <div class="col">
+        <svg width="@Width" height="@Height">
+        @for(int i=0;i<Board.Rows;i++){
+            @for(int j=0;j<Board.Cols;j++){
+            var obj = Board.Data[i,j];
+                <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
+                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
+                @if(!obj.Deleted){
+                    @if(obj.Selected){
+                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey"></rect>
+                    }
+                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color"></circle>
+                }
+                @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
+                </g>
+            }
+        }
+        </svg>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter] public int Width{get;set;}=500;
+    [Parameter] public int Height{get;set;}=500;
+    [Parameter] public Board Board{get;set;}
+    int cellWidth = 0;
+    protected override void OnInitialized() {
+        base.OnInitialized();
+        cellWidth = Width/Board.Cols;
+    }
+}

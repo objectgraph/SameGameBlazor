@@ -9,6 +9,8 @@ namespace SameGame.Data{
         public int Score{get;set;}
         public int CurrentSelection{get;set;}
         public bool GameOver{get;set;}
+        public string GameId{get;set;}
+        public string BoardId{get;set;}
 
         public GameState(int Rows, int Cols, int NumColors){
             this.Rows = Rows;
@@ -18,6 +20,8 @@ namespace SameGame.Data{
             this.Score = 0;
             this.CurrentSelection = 0;
             this.GameOver = false;
+            this.GameId = string.Empty;
+            this.BoardId = string.Empty;
         }
 
         public string Serialize(){

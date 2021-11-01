@@ -7,8 +7,9 @@ namespace SameGame.Data{
         public GameState GameState;
         Stack<String> undoStack = new Stack<String>();
         Stack<String> redoStack = new Stack<String>();
-        public string GameID{get;set;} 
-        public string UserID{get;set;}
+        public string GameId{get;set;} 
+        public string BoardId{get;set;}
+        public string UserId{get;set;}
         public int Rows{get;set;}
         public int Cols{get;set;}
         public int NumColors{get;set;}
@@ -34,38 +35,37 @@ namespace SameGame.Data{
             this.Cols = cols;
             this.NumColors = numColors;
             this.GameState = new GameState(rows,cols,numColors);
-            this.GameID = Guid.NewGuid().ToString();
-            this.UserID = String.Empty;
+            this.GameId = Guid.NewGuid().ToString();
+            this.UserId = String.Empty;
             NewGame();
+        }
+
+        public void InitGame(Board b){
+            this.GameState.Score = 0;
+            this.undoStack.Clear();
+            this.redoStack.Clear();
+            this.Rows = b.Rows;
+            this.Cols = b.Cols;
+            this.NumColors = b.NumColors;
+            this.GameState.Rows = b.Rows;
+            this.GameState.Cols = b.Cols;
+            this.GameState.Data = new Cell[b.Rows,b.Cols];
+            for(int i=0;i<Rows;i++){
+                for(int j=0;j<Cols;j++){
+                    this.GameState.Data[i,j] = b.Data[i,j];
+                }
+            }
         }
 
         public void NewGame(){
             this.GameState.Score = 0;
             this.undoStack.Clear();
             this.redoStack.Clear();
-            var random = new Random();
-            for(int i=0;i<Rows;i++){
-                for(int j=0;j<Cols;j++){
-                    var color = random.Next()%NumColors;
-                    string cl = null;
-                    if(color==0){
-                        cl= "red";
-                    }
-                    else if(color==1){
-                        cl= "green";
-                    }
-                    else if(color==2){
-                        cl= "darkorange";
-                    }
-                    else if(color==3){
-                        cl= "brown";
-                    }
-                    else if(color==4){
-                        cl= "purple";
-                    }
-                    GameState.Data[i,j]= new Cell(i,j,cl,false,false);
-                }    
-            }
+            Board b = new Board(Rows,Cols,NumColors);
+            b.NewGame();
+            this.BoardId = b.BoardId;
+            DataStore.GameBoard[b.BoardId] = b;
+            InitGame(b);
             OnGameStateChanged();
         }
 

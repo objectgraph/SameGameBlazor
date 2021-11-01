@@ -1,8 +1,11 @@
 @inject DataStore DataStore
 <div class="board">
     <div class="row">
-        <div class="col small">
-            @Game.GameID
+        <div class="col-md-6 small">
+            @Game.GameId
+        </div>
+        <div class="col-md-6 small">
+            @Game.BoardId
         </div>
     </div>
     <BoardView Width="@Width" Height="@Height" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
@@ -25,7 +28,7 @@
 
     private  async void OnGameStateChanged(object sender, EventArgs args){
         await InvokeAsync(()=>{
-            DataStore.GlobalStore[Game.GameID] = Game.GameState;
+            DataStore.GlobalStore[Game.GameId] = Game.GameState;
             StateHasChanged();
         });
     }
