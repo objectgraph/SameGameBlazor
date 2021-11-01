@@ -37,7 +37,6 @@ namespace SameGame.Data{
             this.GameState = new GameState(rows,cols,numColors);
             this.GameId = Guid.NewGuid().ToString();
             this.UserId = String.Empty;
-            NewGame();
         }
 
         public void InitGame(Board b){
@@ -55,7 +54,12 @@ namespace SameGame.Data{
                     this.GameState.Data[i,j] = b.Data[i,j];
                 }
             }
+            OnGameStateChanged();
         }
+
+         public void InitGame(string boardId){
+             InitGame(DataStore.GameBoard[boardId]);
+         }
 
         public void NewGame(){
             this.GameState.Score = 0;
@@ -66,7 +70,6 @@ namespace SameGame.Data{
             this.BoardId = b.BoardId;
             DataStore.GameBoard[b.BoardId] = b;
             InitGame(b);
-            OnGameStateChanged();
         }
 
         private bool isValid (int row, int col){

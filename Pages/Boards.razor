@@ -1,5 +1,7 @@
 @page "/boards"
 @inject DataStore DataStore
+@inject NavigationManager UriHelper
+
 <div style="display: flex;flex-flow: row wrap;">
     @foreach(var key in DataStore.GameBoard.Keys){
         <div style="padding:5px;border:1px solid red" >
@@ -30,6 +32,6 @@
     }
 
     private void Play(Board board){
-
+        UriHelper.NavigateTo($"/{board.BoardId}");
     }
 }

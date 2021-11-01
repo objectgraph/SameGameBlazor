@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/{boardId}"
 
 <button class="btn btn-outline-primary" @onclick="()=>NewGame()">New Game</button>
         <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
@@ -6,10 +7,27 @@
 <br/><br/>
 <BoardLite @ref="board" Width="500" Height="500" Rows="10" Cols="10" Colors="5"></BoardLite>
 @code{
-    
+    [Parameter] public string BoardId{get;set;}
     BoardLite board;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+       
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        if(board!=null && !string.IsNullOrEmpty(BoardId)){
+            board.Game.InitGame(BoardId);       
+        }
+        else if(board!=null){
+            board.Game.NewGame();
+        }
+
+    }
+
+
     public void NewGame(){
-        board.Game.NewGame();        
+        board.Game.NewGame();       
     }
 
     public void Undo(){
