@@ -1,4 +1,5 @@
 @page "/showdata"
+@implements IDisposable
 @inject DataStore DataStore
 <button class="btn btn-outline-primary" @onclick="Refresh">Refresh</button>
 <button class="btn btn-outline-primary" @onclick="Reset">Reset</button>
@@ -27,7 +28,8 @@
         DataStore.GlobalStore.CollectionChanged+= OnMyChangeHandler;
     }
 
-    protected void Dispose(){
+    public void Dispose(){
+        Console.WriteLine("Disposing show Data");
         DataStore.GlobalStore.PropertyChanged-= OnMyChangeHandler;
         DataStore.GlobalStore.CollectionChanged-= OnMyChangeHandler;
     }

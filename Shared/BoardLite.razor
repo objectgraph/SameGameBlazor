@@ -1,4 +1,6 @@
 @inject DataStore DataStore
+@implements IDisposable
+
 <div class="board">
     <div class="row">
         <div class="col-md-6 small">
@@ -35,13 +37,12 @@
     [Parameter] public int Rows{get;set;}=10;
     [Parameter] public int Cols{get;set;}=10;
     [Parameter] public int Colors{get;set;}=5;
-    public Game Game{get;set;}
+    [Parameter] public Game Game{get;set;}
     int cellWidth = 0;
 
     protected override void OnInitialized() {
         base.OnInitialized();
         cellWidth = Width/Cols;
-        Game = new Game(Rows,Cols,Colors);
         Game.GameStateChanged+=OnGameStateChanged;
     }
 
@@ -50,6 +51,11 @@
             DataStore.GlobalStore[Game.GameId] = Game.GameState;
             StateHasChanged();
         });
+    }
+
+    public void Dispose(){
+        Console.WriteLine("Disposing of Game Event");
+        Game.GameStateChanged-=OnGameStateChanged;
     }
 
     private void Action(Cell cell){

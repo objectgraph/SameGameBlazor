@@ -5,31 +5,36 @@
         <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
          <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
 <br/><br/>
-<BoardLite @ref="board" Width="500" Height="500" Rows="10" Cols="10" Colors="5"></BoardLite>
+<BoardLite Width="500" Height="500" Rows="10" Cols="10" Colors="5" Game=Game></BoardLite>
 @code{
     [Parameter] public string BoardId{get;set;}
-    BoardLite board;
+    public Game Game{set;get;} 
     protected override void OnInitialized()
     {
-        base.OnInitialized();    
-    }
-    protected override async Task OnAfterRenderAsync(bool firstRender){
-        if(board!=null && !string.IsNullOrEmpty(BoardId)){
-            board.Game.InitGame(BoardId);       
+        base.OnInitialized();
+        Game = new Game(10,10,5); 
+        if(!string.IsNullOrEmpty(BoardId)){
+            Game.InitGame(BoardId);       
+        }
+        else{
+            Game.NewGame();
         }
         
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+       
     }
 
 
     public void NewGame(){
-        board.Game.NewGame();       
+        Game.NewGame();       
     }
 
     public void Undo(){
-        board.Game.Undo();        
+        Game.Undo();        
     }
 
     public void Redo(){
-        board.Game.Redo();        
+        Game.Redo();        
     }
 }
