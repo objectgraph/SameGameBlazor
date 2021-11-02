@@ -5,8 +5,8 @@ namespace SameGame.Data{
     public class Game{
         public event EventHandler GameStateChanged;
         public GameState GameState;
-        Stack<String> undoStack = new Stack<String>();
-        Stack<String> redoStack = new Stack<String>();
+        public Stack<String> undoStack = new Stack<String>();
+        public Stack<String> redoStack = new Stack<String>();
         public string GameId{get;set;} 
         public string BoardId{get;set;}
         public string UserId{get;set;}

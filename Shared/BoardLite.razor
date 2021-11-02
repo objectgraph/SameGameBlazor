@@ -8,7 +8,26 @@
             @Game.BoardId
         </div>
     </div>
-    <BoardView Width="@Width" Height="@Height" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
+    <div class="row">
+        <div class="col-md-9">
+            <BoardView Width="@Width" Height="@Height" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
+        </div>
+        <div class="col-md-3">
+            <h3>Undo Stack</h3>
+             @foreach(var state in Game.undoStack){
+                 var gameState = GameState.DeSerialize(state);
+                 <BoardView Width="100" Height="100" ActionMethod="Action" GameState="@gameState"></BoardView>
+             }   
+
+
+            <h3>Redo Stack</h3>
+             @foreach(var state in Game.redoStack){
+                 var gameState = GameState.DeSerialize(state);
+                 <BoardView Width="100" Height="100" ActionMethod="Action" GameState="@gameState"></BoardView>
+             }   
+        </div>
+    </div>
+    
 </div>
 @code{
     [Parameter] public int Width{get;set;}=500;
