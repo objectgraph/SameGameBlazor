@@ -21,23 +21,7 @@ namespace SameGame.Data{
             for(int i=0;i<Rows;i++){
                 for(int j=0;j<Cols;j++){
                     var color = random.Next()%NumColors;
-                    string cl = null;
-                    if(color==0){
-                        cl= "red";
-                    }
-                    else if(color==1){
-                        cl= "green";
-                    }
-                    else if(color==2){
-                        cl= "darkorange";
-                    }
-                    else if(color==3){
-                        cl= "brown";
-                    }
-                    else if(color==4){
-                        cl= "purple";
-                    }
-                    Data[i,j]= new Cell(i,j,cl,false,false);
+                    Data[i,j]= new Cell(i,j,color,false,false);
                 }    
             }
         }

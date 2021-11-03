@@ -186,7 +186,7 @@ namespace SameGame.Data{
             return true;
         }
         void Swap( int i, int j, int k, int l) {
-            string tColor = GameState.Data[i,j].Color;
+            int tColor = GameState.Data[i,j].Color;
             bool tSelected = GameState.Data[i,j].Selected;
             bool tDeleted = GameState.Data[i,j].Deleted;
 

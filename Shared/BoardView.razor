@@ -1,4 +1,5 @@
 @inject DataStore DataStore
+@inject Common Common
 <div class="board">
     @if(ShowStats){
         <div class="row">
@@ -25,7 +26,7 @@
                     @if(obj.Selected){
                         <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
                     }
-                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@obj.Color" @onclick="()=>Action(obj)"></circle>
+                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)" @onclick="()=>Action(obj)"></circle>
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
                 </g>

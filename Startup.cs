@@ -30,6 +30,8 @@ namespace SameGame
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<DataStore>();
+            services.AddSingleton<Common>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
