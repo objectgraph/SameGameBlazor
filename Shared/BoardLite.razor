@@ -14,22 +14,24 @@
         <div class="col-md-6">
             <BoardView Width="@Width" Height="@Height" ActionMethod="Action" GameState="@Game.GameState"></BoardView>
         </div>
-        <div class="col-md-3">
-            <strong>Undo Stack</strong>
-             @foreach(var state in Game.undoStack){
-                 var gameState = GameState.DeSerialize(state);
-                 <BoardView Width="100" Height="100" ShowStats="false" GameState="@gameState"></BoardView>
-                 <hr/>
-             }   
-        </div>
-        <div class="col-md-3">
-            <strong>Redo Stack</strong>
-            @foreach(var state in Game.redoStack){
-                var gameState = GameState.DeSerialize(state);
-                <BoardView Width="100" Height="100"  ShowStats="false" GameState="@gameState"></BoardView>
-                <hr/>
-            }   
-        </div>
+        @if(ShowUndoRedo){
+            <div class="col-md-3">
+                <strong>Undo Stack</strong>
+                @foreach(var state in Game.undoStack){
+                    var gameState = GameState.DeSerialize(state);
+                    <BoardView Width="100" Height="100" ShowStats="false" GameState="@gameState"></BoardView>
+                    <hr/>
+                }   
+            </div>
+            <div class="col-md-3">
+                <strong>Redo Stack</strong>
+                @foreach(var state in Game.redoStack){
+                    var gameState = GameState.DeSerialize(state);
+                    <BoardView Width="100" Height="100"  ShowStats="false" GameState="@gameState"></BoardView>
+                    <hr/>
+                }   
+            </div>
+        }
     </div>
 </div>
 @code{
@@ -39,6 +41,7 @@
     [Parameter] public int Cols{get;set;}=10;
     [Parameter] public int Colors{get;set;}=5;
     [Parameter] public Game Game{get;set;}
+     [Parameter] public bool ShowUndoRedo {get;set;}=false;
     int cellWidth = 0;
 
     protected override void OnInitialized() {

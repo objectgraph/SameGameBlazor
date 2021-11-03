@@ -3,12 +3,14 @@
 
 <button class="btn btn-outline-primary" @onclick="()=>NewGame()">New Game</button>
         <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
-         <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
+        <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
+        <input type="checkbox" @bind="ShowUndoRedo"> Show Undo/Redo
 <br/><br/>
 <BoardLite Width="500" Height="500" Rows="10" Cols="10" Colors="5" Game=Game></BoardLite>
 @code{
     [Parameter] public string BoardId{get;set;}
     public Game Game{set;get;} 
+    public bool ShowUndoRedo=false;
     protected override void OnInitialized()
     {
         base.OnInitialized();
