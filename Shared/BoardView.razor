@@ -1,16 +1,18 @@
 @inject DataStore DataStore
 <div class="board">
-    <div class="row">
-        <div class="col-md-4">
-            Score: @GameState.Score
+    @if(ShowStats){
+        <div class="row">
+            <div class="col-md-4">
+                Score: @GameState.Score
+            </div>
+            <div class="col-md-4">
+                Selection: @GameState.CurrentSelection
+            </div>
+            <div class="col-md-4">
+                GameOver: @GameState.GameOver
+            </div>
         </div>
-        <div class="col-md-4">
-            Selection: @GameState.CurrentSelection
-        </div>
-        <div class="col-md-4">
-            GameOver: @GameState.GameOver
-        </div>
-    </div>
+    }
     <div class="row">
         <div class="col">
         <svg width="@Width" height="@Height">
@@ -38,6 +40,8 @@
     [Parameter] public int Height{get;set;}=500;
     [Parameter] public GameState GameState{get;set;}
     [Parameter] public Action<Cell> ActionMethod{get;set;}
+    [Parameter] public bool ShowStats{get;set;}=true;
+
     int cellWidth = 0;
     protected override void OnInitialized() {
         base.OnInitialized();

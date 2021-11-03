@@ -18,14 +18,16 @@
             <strong>Undo Stack</strong>
              @foreach(var state in Game.undoStack){
                  var gameState = GameState.DeSerialize(state);
-                 <BoardView Width="100" Height="100" ActionMethod="Action" GameState="@gameState"></BoardView>
+                 <BoardView Width="100" Height="100" ShowStats="false" GameState="@gameState"></BoardView>
+                 <hr/>
              }   
         </div>
         <div class="col-md-3">
             <strong>Redo Stack</strong>
             @foreach(var state in Game.redoStack){
                 var gameState = GameState.DeSerialize(state);
-                <BoardView Width="100" Height="100" ActionMethod="Action" GameState="@gameState"></BoardView>
+                <BoardView Width="100" Height="100"  ShowStats="false" GameState="@gameState"></BoardView>
+                <hr/>
             }   
         </div>
     </div>
