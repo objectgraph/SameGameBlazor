@@ -24,9 +24,19 @@
                 <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
                 @if(!obj.Deleted){
                     @if(obj.Selected){
-                        <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
+                        @if(ActionMethod!=null){
+                            <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey" @onclick="()=>Action(obj)"></rect>
+                        }
+                        else{
+                            <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="grey"></rect>
+                        }
                     }
-                    <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)" @onclick="()=>Action(obj)"></circle>
+                    @if(ActionMethod!=null){
+                        <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)" @onclick="()=>Action(obj)"></circle>
+                    }
+                    else{
+                                                <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)"></circle>
+                    }
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@
                 </g>
