@@ -8,8 +8,8 @@ namespace SameGame.Data.BoardGen{
             Data = new List<T>();
         }
 
-        private static int ParentIndexOf(int i){
-             return (int)(((i)-1)/2);
+        private static int ParentIndexOf(int k){
+             return (int)(((k)-1)/2);
         }
 
         private static int LeftIndexOf(int k){
