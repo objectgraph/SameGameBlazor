@@ -31,6 +31,18 @@ namespace SameGame.Data{
         public static GameState DeSerialize(string str){
             return JsonConvert.DeserializeObject<GameState>(str);
         }
+
+        public int ColorCount(int color){
+            int count = 0;
+            for(int i=0;i<Rows;i++){
+                for(int j=0;j<Cols;j++){
+                    if(Data[i,j].Color==color && !Data[i,j].Deleted){
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
     }
 
 }

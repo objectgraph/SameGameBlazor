@@ -13,6 +13,9 @@
                 GameOver: @GameState.GameOver
             </div>
         </div>
+        <div style="display: flex;justify-content: center;">
+            <GameStats GameState=GameState></GameStats>
+        </div>
     }
     <div class="row">
         <div class="col">
@@ -35,7 +38,7 @@
                         <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)" @onclick="()=>Action(obj)"></circle>
                     }
                     else{
-                                                <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)"></circle>
+                        <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(obj.Color)"></circle>
                     }
                 }
                 @* <text x="@(cellWidth/2)" y="@(cellWidth/2)">(@obj.Row,@obj.Col)</text> *@

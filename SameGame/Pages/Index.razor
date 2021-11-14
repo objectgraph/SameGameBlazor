@@ -4,7 +4,7 @@
 <button class="btn btn-outline-primary" @onclick="()=>NewGame()">New Game</button>
         <button class="btn btn-outline-primary" @onclick="()=>Undo()">Undo</button>
         <button class="btn btn-outline-primary" @onclick="()=>Redo()">Redo</button>
-        <input type="checkbox" @bind="ShowUndoRedo"> Show Undo/Redo
+        <label><input type="checkbox" @bind="ShowUndoRedo"> Show Undo/Redo</label>
 <br/><br/>
 <BoardLite Width="500" Height="500" Rows="10" Cols="10" Colors="5" Game=Game ShowUndoRedo="@ShowUndoRedo"></BoardLite>
 @code{

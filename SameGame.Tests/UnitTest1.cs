@@ -1,6 +1,7 @@
 using Xunit;
 using SameGame.Data.BoardGen;
 using SameGame.Data;
+using System;
 
 namespace SameGame.Tests;
 
