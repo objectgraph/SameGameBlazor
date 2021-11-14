@@ -24,7 +24,13 @@
             @for(int j=0;j<GameState.Cols;j++){
             var obj = GameState.Data[i,j];
                 <g transform="translate(@(j*cellWidth),@(i*cellWidth))">
-                <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
+                @if(ActionMethod!=null){
+                    <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white" @onclick="()=>Action(obj)"></rect>
+                }
+                else{
+                    <rect x=0 y=0 width="@cellWidth" height="@cellWidth" fill="white"></rect>
+                }
+                
                 @if(!obj.Deleted){
                     @if(obj.Selected){
                         @if(ActionMethod!=null){

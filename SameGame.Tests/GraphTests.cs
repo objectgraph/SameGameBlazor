@@ -5,7 +5,7 @@ using System;
 
 namespace SameGame.Tests;
 
-public class UnitTest1
+public class GraphTests
 {
     [Fact]
     public void TestGraphDegreeOf()
