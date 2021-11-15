@@ -1,0 +1,17 @@
+ <svg width="@(GameState.NumColors*cellWidth)" height="@cellWidth">        
+    @for(int i=0;i<GameState.NumColors;i++){
+        <g transform="translate(@(i*cellWidth),0)" width=@cellWidth height=@cellWidth>
+            <circle cx="@(cellWidth/2)" cy="@(cellWidth/2)" r="@(cellWidth/2-2)" fill="@Common.GetColor(i)"></circle>
+            <svg width="@cellWidth" height="@cellWidth">
+                <text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle" stroke="#ffffff" strokewidth="1px" fill="#000000">@GameState.ColorCount(i)</text>      
+            </svg>
+        </g>
+    }
+</svg>
+@code{
+    [Parameter] public GameState GameState{get;set;}
+    [Parameter] public int cellWidth{get;set;} = 50;
+    protected override void OnInitialized() {
+        base.OnInitialized();
+    }
+}
